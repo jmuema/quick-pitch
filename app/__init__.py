@@ -16,3 +16,38 @@ login_manager = LoginManager()  # creation of an instance of the class
 login_manager.session_protection = 'strong'
 # prefix denotes the location of the blueprint
 login_manager.login_view = 'auth.login'
+
+def create_app(config_name):
+
+    # creation of app instance with the __name__ variable
+    app = Flask(__name__)
+
+    # app configurations
+    app.config.from_object(config_options[config_name])
+
+    # initializing flask extensions
+    # completing the initialization of bootstrap instance
+    bootstrap.init_app(app)
+    # calling the init_app method and passing in the application instance
+    db.init_app(app)
+    login_manager.init_app(app)
+    mail.init_app(app)
+    simple.init_app(app)
+
+    # registering main app Blueprint
+    # import the instance that has been created
+    from .main import main as main_blueprint
+    # calling the register_blueprint() method on the application instance and pass in the blueprint
+    app.register_blueprint(main_blueprint)
+
+    # registering authentication blueprint
+    # registering the Blueprint instance.
+    from .auth import auth as auth_blueprint
+    # pass in url_prefix argument that will add a prefix to all the routes registered with that blueprint.
+    app.register_blueprint(auth_blueprint, url_prefix='/authenticate')
+
+    # configure UploadSet
+    # function which takes in the app and upload set instance
+    configure_uploads(app, photos)
+
+    return app
