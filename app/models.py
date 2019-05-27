@@ -14,8 +14,8 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(255), unique=True, index=True)
     bio = db.Column(db.String(255))
     pass_secure = db.Column(db.String(255))
-    pitches = db.relationship('Pitch', backref='user', lazy='dynamic')
-    comments = db.relationship('Comment', backref='user', lazy='dynamic')
+    pitches = db.relationship('Pitch', backref='user_pitch', lazy='dynamic')
+    comment = db.relationship('Comment', backref='user_comment', lazy='dynamic')
 
     @property  
     def password(self):
@@ -76,7 +76,7 @@ class Comment(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     comment_content = db.Column(db.String())
-    pitch_id = db.Column(db.Integer)
+    pitch_id = db.Column(db.Integer, db.ForeignKey('pitches.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def save_comment(self):

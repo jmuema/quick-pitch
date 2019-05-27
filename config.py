@@ -1,45 +1,50 @@
 import os
-# allow for interaction with the operating system dependent functionality
+
 class Config:
     """
-    Describes the general configs
+    This is the parent class which will have the general configurations
     """
-    SECRET_KEY = os.environ.get('SECRET_KEY')
-    UPLOADED_PHOTOS_DEST = 'app/static/photos' #fjfj
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
-    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    UPLOADED_PHOTOS_DEST = "app/static/photos"
+    SECRET_KEY = 'muema'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://joseph:25MuemA25@localhost/booklog'
 
-    # mail config
-    MAIL_SERVER = 'smtp.googlemail.com'
+    #email stuff
+    MAIL_SERVER = "smtp.gmail.com"
     MAIL_PORT = 587
     MAIL_USE_TLS = True
-    MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
-    MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
+    MAIL_USERNAME = 'pitchymojo@gmail.com'
+    MAIL_PASSWORD  = '25MuemA25'
 
-    # simple mde  config
-    SIMPLEMDE_JS_IIFE = True
-    SIMPLEMDE_USE_CDN = True
+class DevConfig(Config):
+    """
+    This is the class which we will use to set the configurations during development stage of the app
+    Args:
+        Config - this is the parent config class from which we inherit its properties
+    """
+
+    DEBUG = True
+    ENV = 'development'
 
 
 class ProdConfig(Config):
     """
-    Describes production config of child class
+    This is the class which we will use to set the configurations during production stage of the app
     Args:
-        Config: The parent configration class with General config settings
+        Config - this is the parent config class from which we inherit its properties
     """
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
 
-
-class DevConfig(Config):
+class TestConfig(Config):
     """
-    Describes development configuration child class
+    This is the class which we will use to set the configurations during testing stage of the app
     Args:
-         Config: The parent configuration class with General configuration settings
+        Config - this is the parent config class from which we inherit its properties
     """
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
-    DEBUG = True
-# Dictionary
+
+
 config_options = {
-    'development': DevConfig,
-    'production': ProdConfig
+    "test": TestConfig,
+    "production": ProdConfig,
+    "development": DevConfig
 }
