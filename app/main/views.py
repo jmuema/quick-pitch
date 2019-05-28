@@ -38,6 +38,8 @@ def profile(uname, id_user):
 @login_required
 def home():
     pitch_form = PitchForm()
+    all_pitches = Pitch.query.all()
+
 
     if pitch_form.validate_on_submit():
         pitch = pitch_form.pitch.data
@@ -49,7 +51,6 @@ def home():
 
         return redirect(url_for('main.home'))
 
-    all_pitches = Pitch.get_all_pitches()
 
     title = 'Home'
     return render_template('home.html', title=title, pitch_form=pitch_form, pitches=all_pitches)

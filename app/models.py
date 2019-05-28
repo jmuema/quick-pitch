@@ -37,6 +37,7 @@ class Pitch(db.Model):
     pitch_content = db.Column(db.String())
     pitch_category = db.Column(db.String(255))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    
 
     def save_pitch(self):
         """
@@ -53,13 +54,13 @@ class Pitch(db.Model):
         pitches = Pitch.query.filter_by(id=id).all()
         return pitches
 
-    @classmethod
-    def get_all_pitches(cls):
-        """
-        function that gets all the pitches
-        """
-        pitches = Pitch.query.order_by('-id').all()
-        return pitches
+    # @classmethod
+    # def get_all_pitches(cls,id):
+    #     """
+    #     function that gets all the pitches
+    #     """
+    #     pitches = Pitch.query.order_by('id').all()
+    #     return pitches
 
     @classmethod
     def get_category(cls, cat):
